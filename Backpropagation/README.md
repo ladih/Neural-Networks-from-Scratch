@@ -1,1 +1,3 @@
-Implementation of backpropagation in Python
+# Backpropagation
+
+July 2023
