@@ -1,1 +1,1 @@
-Machine learning projects
+Small machine learning projects
