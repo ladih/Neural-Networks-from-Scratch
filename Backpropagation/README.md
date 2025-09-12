@@ -4,7 +4,7 @@ Implementation of the backpropagation algorithm for multi layered neural network
 
 
 
-Example of a run of test.py:
+Example:
 
 
 ![Training error example](training_error.png)
