@@ -9,7 +9,7 @@ Implementation of the backpropagation algorithm for multilayer neural networks i
 ![Training data](training_data.png)
 
 
-How points in the plane are classified by the neural network after training has been done on the training data:
+Classification of points after training:
 
 ![Example of classification](classifications.png)
 
