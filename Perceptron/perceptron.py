@@ -5,8 +5,6 @@
 
 # Classify inputs (x1, x2) as 1 if f(x1, x2) > 0, otherwise as 0.
 
-
-
 import numpy as np
 import logging
 from random import randint # when training, random training samples are picked
@@ -65,4 +63,5 @@ class Perceptron:
             if summation >= 0 and labels[i] == 0:
                 return 0
         return 1
+
 
