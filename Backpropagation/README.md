@@ -6,15 +6,15 @@ Implementation of the backpropagation algorithm for multilayer neural networks i
 
 **Example**:
 
-![Training data]("training data".png)
+![Training data](training_data.png)
 
 
 How points in the plane are classified by the neural network after training has been done on the training data:
 
-![Example of classification](example_classification.png)
+![Example of classification](classifications.png)
 
 
 
 
 
-![Training error example](training_error.png)
+![Training error example](errorcurve.png)
