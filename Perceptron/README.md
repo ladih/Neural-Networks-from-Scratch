@@ -1,5 +1,5 @@
 # Perceptron
 
-Implementation of a perceptron in Python
+Implementation of a perceptron in Python.
 
 ![Development of boundaries](Example.png)
