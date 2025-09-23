@@ -1,4 +1,4 @@
-# Testing the perceptron on two clusters of points in the plane
+# Testing the perceptron on two separable clusters in the plane
 
 import perceptron as perc
 import numpy as np
@@ -73,3 +73,4 @@ plt.title("Evolution of decision boundaries during training")
 plt.xlabel("Feature 1")
 plt.ylabel("Feature 2")
 plt.show()
+
