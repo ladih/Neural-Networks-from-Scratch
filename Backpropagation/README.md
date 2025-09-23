@@ -4,7 +4,7 @@ Implementation of the backpropagation algorithm for multilayer neural networks i
 
 
 
-**Example**
+**Example**:
 
 ![Training data](training_data.png)
 
