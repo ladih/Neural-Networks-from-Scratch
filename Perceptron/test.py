@@ -4,7 +4,8 @@ import perceptron as perc
 import numpy as np
 import matplotlib.pyplot as plt
 
-p = perc.Perceptron()  # create a perceptron
+# Initialize a perceptron
+p = perc.Perceptron()
 
 def generate_gaussian_points(mean, cov, num_points):
     points = np.random.multivariate_normal(mean, cov, num_points)
@@ -73,4 +74,5 @@ plt.title("Evolution of decision boundaries during training")
 plt.xlabel("Feature 1")
 plt.ylabel("Feature 2")
 plt.show()
+
 
