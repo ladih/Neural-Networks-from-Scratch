@@ -1,23 +1,12 @@
-# Testing the network
-
 from network import *
 import random
 
-
-
-# X = np.array([[0, 0], [0, 1], [1, 0], [1, 1]])
-# y = np.array([[0], [1], [1], [0]])
-
-X = np.array([[0, 0], [0.5, 0], [1, 0], [0, 0.5], [0, 1], [0.25, 0.25], [0.5, 0.5], [1, 1]])    # input
+# Train data
+X = np.array([[0, 0], [0.5, 0], [1, 0], [0, 0.5], [0, 1], [0.25, 0.25], [0.5, 0.5], [1, 1]])  # input
 y = np.array([[1], [1], [1], [1], [1], [0], [0], [0]])     # labels
 
-# X = np.array([[0, 0], [0, 1], [1, 0], [1, 1]])    # input
-# y = np.array([[1, 1, 1], [1, 0, 1], [1, 0, 0], [0, 0, 1]])
-
-# X = np.array([[0, 0], [0, 1], [1, 0], [1, 1], [0.5, 0.5], [0.5, 1], [0, 0.5], [0.5, 0], [1, 0.5]])    # input
-# y = np.array([[1], [1], [1], [1], [0], [1], [1], [1], [1]])
-
 nn = NeuralNetwork(input_size=len(X[0]), output_size=len(y[0]), hidden_sizes=[2, 2])
+
 
 nn.train(X, y, learning_rate=0.1, epochs=20000, batch_size=len(X), error_threshold=0.01)
 
@@ -53,22 +42,19 @@ def plot_2D(n):
     plt.ylabel("input feature 2")
     plt.show()
 
+# Plot training data
+# Class 1 points
+plt.scatter(X[y.ravel()==1, 0], X[y.ravel()==1, 1], color="red", label="Class 1") # need ravel since input y to NN is 2D
 
-# if input is 2D
-if len(X[0]) == 2 and len(y[0]) == 1:
+# Class 0 points
+plt.scatter(X[y.ravel()==0, 0], X[y.ravel()==0, 1], color="black", label="Class 0")
 
-    # plot training data
-    # Class 1 points
-    plt.scatter(X[y.ravel()==1, 0], X[y.ravel()==1, 1], color="red", label="Class 1") # need ravel since input y to NN is 2D
+plt.legend()
+plt.title("Training data")
+plt.xlabel("input feature 1")
+plt.ylabel("input feature 2")
+plt.show()
 
-    # Class 0 points
-    plt.scatter(X[y.ravel()==0, 0], X[y.ravel()==0, 1], color="black", label="Class 0")
+# plot how points are classified after training
+plot_2D(500)
 
-    plt.legend()
-    plt.title("Training data")
-    plt.xlabel("input feature 1")
-    plt.ylabel("input feature 2")
-    plt.show()
-
-    # plot how points are classified after training
-    plot_2D(500)
