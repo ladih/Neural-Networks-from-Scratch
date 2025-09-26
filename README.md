@@ -1,1 +1,3 @@
-Implementation of a perceptron and the backpropagation algorithm.
+# Neural Networks from Scartch
+
+Implementation of a perceptron and the backpropagation algorithm from scratch in Python.
