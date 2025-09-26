@@ -2,6 +2,6 @@
 
 ## Content
 
-1. Implementation of a perceptron
+* Implementation of a perceptron
 
-2. Implementation of the backpropagation algorithm for multilayer neural networks
+* Implementation of the backpropagation algorithm for multilayer neural networks
