@@ -1,3 +1,7 @@
 # Neural Networks from Scratch
 
-Implementation of a perceptron and the backpropagation algorithm from scratch in Python.
+This repo consists of two things:
+
+**Implementation of a perceptron**
+
+**Implementation of the backpropagation algorithm for multilayer neural networks**
