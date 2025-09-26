@@ -1,6 +1,6 @@
 # Neural Networks from Scratch
 
-Contents:
+## Content
 
 1. Implementation of a perceptron
 
