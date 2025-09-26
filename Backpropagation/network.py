@@ -85,6 +85,7 @@ class NeuralNetwork:
         """Returns random subsets of training_inputs and labels of size batch_size."""
 
         indices = np.random.choice(len(training_inputs), batch_size, replace=False)
+        print(indices)
         batch_inputs = np.array(training_inputs[indices])
         batch_labels = np.array(labels[indices])
         return batch_inputs, batch_labels
@@ -121,4 +122,5 @@ class NeuralNetwork:
         plt.ylabel('Error')
         plt.title('Training Error Curve')
         plt.show()
+
 
