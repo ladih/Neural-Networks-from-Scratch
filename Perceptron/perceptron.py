@@ -13,11 +13,11 @@ logging.basicConfig(level=logging.INFO)
 
 class Perceptron:
     def __init__(self):
-        self.weights = np.array([1,3,1])   # initial boundary
+        self.weights = np.array([1,3,1])   # initial boundary (for 2D input)
         self.weightsequence = []           # storing boundaries during training
 
     def predict(self, input):
-        summation = np.dot(input, self.weights)   # input has form (x1, x2, 1)
+        summation = np.dot(input, self.weights)   # Assume input has form (x1, x2, 1)
         if summation > 0:
             return 1
         else:
@@ -30,7 +30,7 @@ class Perceptron:
         while self._test_all(training_inputs, labels) == 0:  # train until all training samples are correctly classified
 
             rint = randint(0, len(training_inputs)-1)
-            x = training_inputs[rint]                      # pick a random input from training_inputs
+            x = training_inputs[rint]                      # pick random input
 
             summation = np.dot(x, self.weights)
 
@@ -63,5 +63,6 @@ class Perceptron:
             if summation >= 0 and labels[i] == 0:
                 return 0
         return 1
+
 
 
