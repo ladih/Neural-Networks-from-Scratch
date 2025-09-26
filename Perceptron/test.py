@@ -26,7 +26,7 @@ num_points = 10
 # Ones for input format (x1, x2, 1)
 ones = np.ones((num_points, 1))
 
-# Generate two clusters of points that are (hopefully) linearly separable
+# Generate two clusters of points that are (most certainly) linearly separable
 points1 = generate_gaussian_points(mean1, cov1, num_points)
 points1 = np.hstack((points1, ones)) # (x1, x2) -> (x1, x2, 1)
 
@@ -75,6 +75,7 @@ plt.title("Evolution of decision boundaries during training")
 plt.xlabel("Feature 1")
 plt.ylabel("Feature 2")
 plt.show()
+
 
 
 
