@@ -1,7 +1,7 @@
 # Neural Networks from Scratch
 
-This repo consists of two things:
+Contents:
 
-**Implementation of a perceptron**
+1. Implementation of a perceptron
 
-**Implementation of the backpropagation algorithm for multilayer neural networks**
+2. Implementation of the backpropagation algorithm for multilayer neural networks
