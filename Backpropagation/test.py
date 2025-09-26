@@ -7,7 +7,7 @@ y = np.array([[1], [1], [1], [1], [1], [0], [0], [0]])     # labels
 
 nn = NeuralNetwork(input_size=len(X[0]), output_size=len(y[0]), hidden_sizes=[2, 2])
 
-nn.train(X, y, learning_rate=0.1, epochs=20000, batch_size=len(X), error_threshold=0.01)
+nn.train(X, y, learning_rate=0.1, n_epochs=20000, batch_size=len(X), error_threshold=0.01)
 
 nn.plot_error_curve()
 
@@ -49,4 +49,5 @@ plt.show()
 
 # plot how points are classified after training
 plot_2D(500)
+
 
