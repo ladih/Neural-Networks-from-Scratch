@@ -6,67 +6,118 @@ def sigmoid(x):
 
 class NeuralNetwork:
     def __init__(self, input_size, output_size, hidden_sizes):
-        # network structure
+        # initialize structure
         self.input_size   = input_size
         self.output_size  = output_size
         self.hidden_sizes = hidden_sizes
         self.num_layers   = len(self.hidden_sizes)
 
-        # initialize weights. '_ext' for weight matrices including weights for bias unit
+        # build weight matrices
+        # Example with two inputs and two nodes (excl. bias) at first hidden
+
+        #  o ---- w11 ---- o
+        #
+        #
+        #  o ---- w22 ---- o
+
+        # Weights from input nodes (and bias node) to first hidden layer
+        #
+        #   [w11     w12]      # first input node to hidden layer
+        #   [w21     w22]      # second input node to hidden layer
+        #   [w31     w32]      # bias node to hidden layer
+
+
+        # initialize weights (ext includes weights for bias node)
         self.weights_ext = []
+
+        # weights from input nodes (and bias node) to first hidden layer
         self.weights_ext.append(np.random.randn(input_size + 1, hidden_sizes[0]))
 
+        # weights from hidden -> hidden -> hidden ...  (including bias nodes)
         for i in range(self.num_layers - 1):
             self.weights_ext.append(np.random.randn(hidden_sizes[i] + 1, hidden_sizes[i+1]))
 
+        # weights from last hidden (and bias) to output nodes
         self.weights_ext.append(np.random.randn(hidden_sizes[-1] + 1, output_size))
 
-        self.weights = [np.delete(w, -1, axis=0) for w in self.weights_ext]  # weights without biases
+         # weights without biases
+         # delete last row from each weight matrix in weights_ext
+        self.weights = [np.delete(w, -1, axis=0) for w in self.weights_ext]
 
-        self.errors = [] # List to store training errors during the training process
+        self.errors = [] # List to store training errors
 
-    def train(self, training_inputs, labels, learning_rate, n_epochs, batch_size, error_threshold=1e-2):
+    def train(self, training_inputs, labels, learning_rate, n_batches, batch_size, error_threshold):
 
         self.errors.append(self.total_error(training_inputs, labels))
 
-        for epoch in range(n_epochs):
+        for batch in range(n_batches):
+            # initialize weight update matrices for the batch
             dW_tot = [np.zeros(w.shape) for w in self.weights_ext]
 
+            # fetch batch from training samples
             batch_in, batch_out = self._get_batch(training_inputs, labels, batch_size)
 
-            # forward step
+            # forward step for one sample at a time
+            # calculates the output for each layer
+            # Example:
+            # first layer gives o0 = sigmoid( (input, 1) @ W0 ) to layer 2
+            # layer 2 gives o1 = sigmoid (o0, 1) @ W1) to layer 3
+            # layer 3 gives o2 = sigmoid (o1 @ W3) to output layer
+
             for inp, label in zip(batch_in, batch_out):
-                out_layer_ext = np.append(inp, 1)  # initialize out_layer_ext with input in extended form
-                out_layers_ext = [out_layer_ext]   # initialize out_layers_ext with extended input
+
+                # collect outputs for all layers
+                out_layer_ext = np.append(inp, 1)  # input in extended form
+                out_layers_ext = [out_layer_ext]
+
                 for w in self.weights_ext:
                     out_layer = sigmoid(out_layer_ext @ w)
                     out_layer_ext = np.append(out_layer, 1)
                     out_layers_ext.append(out_layer_ext)
 
 
-                out_layers = [np.delete(o, -1, axis=0) for o in out_layers_ext]  # weights without biases
-                out_layers_ext = [o.reshape(1, -1) for o in out_layers_ext]
+                out_layers = [np.delete(ol, -1, axis=0) for ol in out_layers_ext]
 
-                derivatives = [np.diag(o * (1 - o)) for o in out_layers] # stored derivatives in matrix form at each layer
+                # 1D array -> matrix with 1 row
+                out_layers_ext = [ol.reshape(1, -1) for ol in out_layers_ext]
 
-                derivative_error = (out_layers[-1] - label).reshape(-1, 1) # assuming error at each output unit to be 1/2 * (out - label)^2
+                # stored derivatives in matrix form at each layer
+                # f' = f * (1 - f) for f = sigmoid
+                derivatives = [np.diag(ol * (1 - ol)) for ol in out_layers]
 
-                # backpropagation step
-                back_prop = derivatives[-1] @ derivative_error # propagate from error units to output units
-                dW = (-learning_rate * back_prop @ out_layers_ext[-2]).T # weight changes for weights from last hidden to output units
+                # assuming error at each output unit to be 1/2 * (out - label)^2
+                # 1D array -> matrix with 1 column
+
+                derivative_error = (out_layers[-1] - label).reshape(-1, 1)
+
+                # Backpropagation
+                # backpropagate from error units to output units
+                back_prop = derivatives[-1] @ derivative_error
+
+                # weight updates for weights from last hidden to output units
+                #
+                #  last_hidden -------- w --------- out_layer ------- error
+                #
+                # d(error) / dw = d(error) / d out_layer *
+                #                 * d(out_layer) / dw
+                # d(out_layer) / dw = value_last_hidden * sigmoid'
+
+                dW = (-learning_rate * back_prop @ out_layers_ext[-2]).T
                 dW_vec = [dW]
+
                 for k in range(self.num_layers):
                     back_prop = derivatives[-k-2] @ self.weights[-k-1] @ back_prop
                     dW = (-learning_rate * back_prop @ out_layers_ext[-k-3]).T
                     dW_vec.append(dW)
 
-                dW_vec = dW_vec[::-1]   # dW_vec was built during backpropagation, so need to reverse it to be compatible with dW_tot
+                # reverse dW_vec (was built during backprop)
+                dW_vec = dW_vec[::-1]
 
-                # accumulate weight changes
+                # add weight updates for the sample to total
                 for i in range(len(dW_tot)):
                     dW_tot[i] += dW_vec[i]
 
-            # update the weights
+            # update weights
             for i in range(len(self.weights_ext)):
                 self.weights_ext[i] += dW_tot[i]
             self.weights = [np.delete(w, -1, axis=0) for w in self.weights_ext]
@@ -75,29 +126,21 @@ class NeuralNetwork:
             self.errors.append(error)
 
             if error < error_threshold:
-                self.print_training(epoch, learning_rate, batch_size, error_threshold, self.hidden_sizes)
+                print(f"Training done with error {error:.4f}.")
                 break
 
-            if (epoch + 1) % 10000 == 0:
-                print("Processed", str(epoch+1) + '/' + str(n_epochs))
+            if (batch + 1) % 10000 == 0:
+                print("Processed", str(batch+1) + '/' + str(n_batches))
+        if error >= error_threshold:
+            print(f"Training done with final error {error:.4f}. Threshold {error_threshold} not reached (why?)")
 
     def _get_batch(self, training_inputs, labels, batch_size):
-        """Returns random subsets of training_inputs and labels of size batch_size."""
+        """Returns random training batch (inputs+labels)."""
 
         indices = np.random.choice(len(training_inputs), batch_size, replace=False)
-        print(indices)
         batch_inputs = np.array(training_inputs[indices])
         batch_labels = np.array(labels[indices])
         return batch_inputs, batch_labels
-
-    def print_training(self, epoch, learning_rate, batch_size, error_threshold, hidden_sizes):
-        """Just a print when training is done."""
-
-        formatted_threshold = "{:.0e}".format(error_threshold).replace("e-0", "e-")
-        print("Training stopped with error <", formatted_threshold, "after", epoch + 1, "epochs.", end="\n")
-        print("Learning rate:", learning_rate)
-        print("Batch size:", batch_size)
-        print("Hidden_sizes:", hidden_sizes)
 
     def predict(self, inp):
         output = np.append(inp, 1)
@@ -113,14 +156,12 @@ class NeuralNetwork:
             res = self.predict(sample)
             for j, component in enumerate(res):
                 sum += 1/2 * (res[j] - labels[i][j])**2
-        return sum/len(training)
+        return sum / len(training)
 
     def plot_error_curve(self):
-        n_epochs = len(self.errors)
-        plt.plot(range(1, n_epochs+1), self.errors)
-        plt.xlabel('Epoch')
+        n_batches = len(self.errors)
+        plt.plot(range(1, n_batches+1), self.errors)
+        plt.xlabel('Number of batches trained on')
         plt.ylabel('Error')
         plt.title('Training Error Curve')
         plt.show()
-
-
