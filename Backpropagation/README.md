@@ -8,6 +8,7 @@ Implementation of the backpropagation algorithm for multilayer neural networks i
 
 ![Training data](training_data.png)
 
+Classification of 500 random points after training:
 
 ![Example of classification](classifications.png)
 
