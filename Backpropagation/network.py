@@ -25,11 +25,11 @@ class NeuralNetwork:
 
         self.errors = [] # List to store training errors during the training process
 
-    def train(self, training_inputs, labels, learning_rate, epochs, batch_size, error_threshold=1e-2):
+    def train(self, training_inputs, labels, learning_rate, n_epochs, batch_size, error_threshold=1e-2):
 
         self.errors.append(self.total_error(training_inputs, labels))
 
-        for epoch in range(epochs):
+        for epoch in range(n_epochs):
             dW_tot = [np.zeros(w.shape) for w in self.weights_ext]
 
             batch_in, batch_out = self._get_batch(training_inputs, labels, batch_size)
@@ -79,7 +79,7 @@ class NeuralNetwork:
                 break
 
             if (epoch + 1) % 10000 == 0:
-                print("Processed", str(epoch+1) + '/' + str(epochs))
+                print("Processed", str(epoch+1) + '/' + str(n_epochs))
 
     def _get_batch(self, training_inputs, labels, batch_size):
         """Returns random subsets of training_inputs and labels of size batch_size."""
@@ -115,9 +115,10 @@ class NeuralNetwork:
         return sum/len(training)
 
     def plot_error_curve(self):
-        epochs = len(self.errors)
-        plt.plot(range(1, epochs+1), self.errors)
+        n_epochs = len(self.errors)
+        plt.plot(range(1, n_epochs+1), self.errors)
         plt.xlabel('Epoch')
         plt.ylabel('Error')
         plt.title('Training Error Curve')
         plt.show()
+
