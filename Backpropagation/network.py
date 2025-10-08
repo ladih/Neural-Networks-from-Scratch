@@ -12,12 +12,13 @@ class NeuralNetwork:
         self.hidden_sizes = hidden_sizes
         self.num_layers   = len(self.hidden_sizes)
 
-        # build weight matrices
+        # Build weight matrices
         # Example with two inputs and two nodes (excl. bias) at first hidden
 
         #  o ---- w11 ---- o
-        #
-        #
+        #     \         /
+        #       w12, w21
+        #     /         \  
         #  o ---- w22 ---- o
 
         # Weights from input nodes (and bias node) to first hidden layer
@@ -165,3 +166,4 @@ class NeuralNetwork:
         plt.ylabel('Error')
         plt.title('Training Error Curve')
         plt.show()
+
