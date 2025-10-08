@@ -3,7 +3,7 @@
 Implementation of the backpropagation algorithm for a fully connected multilayer neural network in Python.
 
 
- Using sigmoid activation,
+ Used sigmoid activation,
  
  $s(x) = \frac1{1 + e^{-x}}$,
  
