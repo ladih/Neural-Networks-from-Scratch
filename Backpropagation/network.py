@@ -17,7 +17,7 @@ class NeuralNetwork:
 
         #  o ---- w11 ---- o
         #     \         /
-        #       w12, w21
+        #      w12, w21
         #     /         \  
         #  o ---- w22 ---- o
 
@@ -166,6 +166,7 @@ class NeuralNetwork:
         plt.ylabel('Error')
         plt.title('Training Error Curve')
         plt.show()
+
 
 
 
